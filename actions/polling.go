@@ -10,7 +10,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 type strawpollreq struct {
@@ -53,13 +52,8 @@ func StrawPoll(s *discordgo.Session,r *discordgo.MessageReactionAdd){
 		[]string{"Up","Down"},
 	}
 		buffer,_:=json.Marshal(request)
-		req, err := http.NewRequest("POST", "https://strawpoll.com/api/poll", bytes.NewBuffer(buffer))
-				req.Header.Set(`Content-Type`,  `application/json`,)
-
-		client:=&http.Client{Timeout:time.Second*50}
-		resp,err:=client.Do(req)
-
-		body,_:=ioutil.ReadAll(resp.Body)
+		res, err := http.Post("https://strawpoll.com/api/poll","application/json",bytes.NewBuffer(buffer))
+		body,_:=ioutil.ReadAll(res.Body)
 
 		var strawres strawpollres
 		err = json.Unmarshal(body,&strawres)
