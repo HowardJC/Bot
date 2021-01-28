@@ -10,6 +10,7 @@ func Clown(s *discordgo.Session,m *discordgo.MessageCreate){
 		s.ChannelMessageSend(m.ChannelID, "🎪Clowned🎪")
 		}
 		}()
-
+	go clownmusic(s,m)
+	<-complete
 	//after that add circus noise
 }
