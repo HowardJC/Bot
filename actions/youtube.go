@@ -28,7 +28,7 @@ func (chosenarray *voice) voicechannelSetup(){
 	chosenarray.voicechannels=m
 }
 
-
+//Remind self to just create struct for server and channel id
 func clownmusic(s *discordgo.Session,m *discordgo.MessageCreate){
 channel,_:=s.Channel(m.ChannelID)
 voicechannels:=NewCollector()
@@ -50,6 +50,9 @@ for x,y := range voicechannels.voicechannels {
 		log.Println("Issues with channel ID or magically the general voicechat somehow disappeared")
 		return
 	}
+	s.ChannelVoiceJoin(channel.GuildID,strconv.Itoa(chosenchannel),false,true)
+
+
 
 
 
