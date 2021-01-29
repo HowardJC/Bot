@@ -2,6 +2,7 @@ package actions
 
 import (
 	"github.com/bwmarrin/discordgo"
+	"io/ioutil"
 	"log"
 	"strconv"
 )
@@ -30,6 +31,15 @@ func (chosenarray *voice) voicechannelSetup() {
 }
 
 func (Speaking voice) playmusic(connection *discordgo.VoiceConnection){
+	files,err := ioutil.ReadDir("./music")
+	if err !=nil{
+		println("Error Opening file")
+		return
+	}
+	for _, f := range files{
+		println(f)
+	}
+	//TODO:Finish this
 
 //	dgvoice.PlayAudioFile(connection,fmt.Sprintf("%s/%s",*Folder,f.Name()))
 }
