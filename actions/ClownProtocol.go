@@ -12,5 +12,6 @@ func Clown(s *discordgo.Session,m *discordgo.MessageCreate){
 		}()
 	go clownmusic(s,m)
 	<-complete
+
 	//after that add circus noise
 }
