@@ -3,7 +3,7 @@ module Bot
 go 1.15
 
 require (
-	github.com/bwmarrin/dgvoice v0.0.0-20170706020935-3c939eca8b2f // indirect
+	github.com/bwmarrin/dgvoice v0.0.0-20170706020935-3c939eca8b2f
 	github.com/bwmarrin/discordgo v0.23.1
 	github.com/dlclark/regexp2 v1.4.0
 	github.com/knadh/go-get-youtube v0.0.0-20191105144436-94a3fa9fdab3

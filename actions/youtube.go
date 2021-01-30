@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+	"github.com/bwmarrin/dgvoice"
 	"github.com/bwmarrin/discordgo"
 	"io/ioutil"
 	"log"
@@ -11,7 +13,7 @@ var complete = make(chan bool)
 
 type voice struct {
 	voicechannels map[string]discordgo.ChannelType
-	connection *discordgo.VoiceConnection
+	connection    *discordgo.VoiceConnection
 }
 
 func (chosenarray voice) channelcollector(channel *discordgo.Channel) {
@@ -30,18 +32,19 @@ func (chosenarray *voice) voicechannelSetup() {
 	chosenarray.voicechannels = m
 }
 
-func (Speaking voice) playmusic(connection *discordgo.VoiceConnection){
-	files,err := ioutil.ReadDir("./music")
-	if err !=nil{
+func (Speaking voice) playmusic(connection *discordgo.VoiceConnection) {
+	files, err := ioutil.ReadDir("./music")
+	if err != nil {
 		println("Error Opening file")
 		return
 	}
-	for _, f := range files{
-		println(f)
+	for _, f := range files {
+		dgvoice.PlayAudioFile(connection, fmt.Sprintf("./music/%s", f.Name()), make(chan bool))
 	}
+
 	//TODO:Finish this
 
-//	dgvoice.PlayAudioFile(connection,fmt.Sprintf("%s/%s",*Folder,f.Name()))
+	//	dgvoice.PlayAudioFile(connection,fmt.Sprintf("%s/%s",*Folder,f.Name()))
 }
 
 //Remind self to just create struct for server and channel id
@@ -55,7 +58,6 @@ func clownmusic(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	var chosenchannel int
 	for x, y := range voicechannels.voicechannels {
-
 		if y == discordgo.ChannelTypeGuildVoice {
 			chosenchannel, _ = strconv.Atoi(x)
 			break
@@ -66,13 +68,12 @@ func clownmusic(s *discordgo.Session, m *discordgo.MessageCreate) {
 		log.Println("Issues with channel ID or magically the general voicechat somehow disappeared")
 		return
 	}
-	connection,_:=s.ChannelVoiceJoin(channel.GuildID, strconv.Itoa(chosenchannel), false, true)
-	voicechannels.connection=connection
+	connection, _ := s.ChannelVoiceJoin(channel.GuildID, strconv.Itoa(chosenchannel), false, true)
+	voicechannels.connection = connection
 
 	go println("Finished joining")
 	go voicechannels.playmusic(connection)
-//select{
-//case
-//}
+	//select{
+	//case
+	//}
 }
-
