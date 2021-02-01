@@ -2,8 +2,8 @@ package actions
 
 import (
 	"fmt"
-	"github.com/bwmarrin/dgvoice"
 	"github.com/bwmarrin/discordgo"
+	"github.com/jonas747/dca"
 	"io/ioutil"
 	"log"
 	"strconv"
@@ -39,7 +39,18 @@ func (Speaking voice) playmusic(connection *discordgo.VoiceConnection) {
 		return
 	}
 	for _, f := range files {
-		dgvoice.PlayAudioFile(connection, fmt.Sprintf("./music/%s", f.Name()), make(chan bool))
+		//LockKey:=new(sync.Mutex)
+		done := make(chan error)
+		opts := dca.StdEncodeOptions
+		EncodedFile, err := dca.EncodeFile(fmt.Sprintf("./music/%s", f.Name()), opts)
+		if err != nil {
+			println("Error encoding")
+			return
+		}
+
+		dca.NewStream(EncodedFile, connection, done)
+		println("Proof its async")
+
 	}
 
 	//TODO:Finish this
